@@ -13,6 +13,6 @@ spec:
         matchLabels:
           os: darwin
           arch: arm64
-      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v0.1.2/kubectl-komodor-darwin-arm64.tar.gz
+      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.0.2/kubectl-komodor-darwin-arm64.tar.gz
       sha256: 5ac5db4e45ac4d3ad42ac93ebf5c53fb390badc481cf12c428613d337d5933dd
       bin: kubectl-komodor
