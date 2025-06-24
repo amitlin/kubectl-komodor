@@ -1,0 +1,18 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: komodor
+spec:
+  version: "v0.1.2"
+  homepage: "https://github.com/amitlin/kubectl-komodor"
+  shortDescription: "Komodor plugin for kubectl"
+  description: |
+    A kubectl plugin to interact with resources in Komodor directly from the command line.
+  platforms:
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: arm64
+      uri: file:///path/to/kubectl-komodor-darwin-arm64.tar.gz
+      sha256: sha256sum of the tarball
+      bin: kubectl-komodor

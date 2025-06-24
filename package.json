@@ -1,0 +1,20 @@
+{
+  "name": "kubectl-komodor",
+  "module": "index.ts",
+  "type": "module",
+  "version": "v0.1.2",
+  "description": "kubectl plugin to open Komodor UI for Kubernetes resources",
+  "bin": {
+    "kubectl-komodor": "./index.ts"
+  },
+  "scripts": {
+    "start": "bun index.ts",
+    "install-locally": "bun install-locally.ts $npm_package_version"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
