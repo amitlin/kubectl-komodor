@@ -2,6 +2,8 @@
 
 A kubectl plugin to open resources in Komodor directly from the command line.
 
+> **Note:** The current context name must either be equal to the cluster name in Komodor, or an ARN that ends with the cluster name in Komodor (e.g. `arn:aws:eks:us-east-1:123456789:cluster/your-cluster-name`).
+
 ## Installation
 
 ### With Krew (recommended)
