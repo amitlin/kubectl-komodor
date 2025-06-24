@@ -3,7 +3,7 @@ kind: Plugin
 metadata:
   name: komodor
 spec:
-  version: "v0.1.2"
+  version: "v1.0.2"
   homepage: "https://github.com/amitlin/kubectl-komodor"
   shortDescription: "Komodor plugin for kubectl"
   description: |
