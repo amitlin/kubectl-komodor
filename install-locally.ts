@@ -2,8 +2,8 @@
 
 import { $ } from "bun";
 const PLUGIN_NAME = "kubectl-komodor";
-const MANIFEST_TEMPLATE = "kubectl-komodor.dev.example.yaml";
-const MANIFEST = "kubectl-komodor.dev.yaml";
+const MANIFEST_TEMPLATE = "komodor.dev.example.yaml";
+const MANIFEST = "komodor.dev.yaml";
 const ENTRYPOINT = "index.ts";
 
 if (Bun.argv.length < 3) {

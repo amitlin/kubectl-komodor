@@ -4,7 +4,7 @@ import { $ } from "bun";
 const PLUGIN_NAME = "kubectl-komodor";
 const ENTRYPOINT = "index.ts";
 const VERSION = Bun.argv[2];
-const MANIFEST_FILE = "kubectl-komodor.yaml";
+const MANIFEST_FILE = "komodor.yaml";
 
 if (!VERSION) {
   console.error("Usage: bun release-all.ts <new-version>");
