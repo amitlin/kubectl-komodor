@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "bun index.ts",
-    "install-locally": "bun install-locally.ts $npm_package_version"
+    "install-locally": "bun install-locally.ts $npm_package_version",
+    "release-all": "bun release-all.ts $npm_package_version"
   },
   "devDependencies": {
     "bun-types": "latest"
