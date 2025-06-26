@@ -9,7 +9,7 @@ A kubectl plugin to open resources in Komodor directly from the command line.
 ### With Krew (recommended)
 
 ```sh
-ku krew install --manifest-url=https://raw.githubusercontent.com/amitlin/kubectl-komodor/refs/heads/main/kubectl-komodor.yaml
+kubectl krew install --manifest-url=https://raw.githubusercontent.com/amitlin/kubectl-komodor/refs/heads/main/kubectl-komodor.yaml
 ```
 
 ### Manual (local build)
