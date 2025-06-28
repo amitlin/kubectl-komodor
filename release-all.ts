@@ -20,9 +20,9 @@ const platforms = [
 
 // Try to read the current manifest for metadata
 let homepage = "https://github.com/amitlin/kubectl-komodor";
-let shortDescription = "Komodor plugin for kubectl";
+let shortDescription = "Interact with cluster resources through Komodor";
 let description =
-  "A kubectl plugin to interact with resources in Komodor directly from the command line.";
+  "A utility to interact with cluster resources through Komodor. Open up resources in Komodor directly from the command line.";
 try {
   const manifestText = await Bun.file(MANIFEST_FILE).text();
   homepage = manifestText.match(/homepage: "([^"]+)"/)?.[1] || homepage;
@@ -52,8 +52,8 @@ for (const { os, arch, target } of platforms) {
   await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE}`;
 
   // 2. Tar
-  console.log(`Packaging ${OUTFILE} into ${TARBALL}...`);
-  await $`tar czf ${TARBALL} ${OUTFILE}`;
+  console.log(`Packaging ${OUTFILE} and LICENSE into ${TARBALL}...`);
+  await $`tar czf ${TARBALL} ${OUTFILE} LICENSE`;
 
   // 3. SHA256
   const shaOut = await $`shasum -a 256 ${TARBALL}`;

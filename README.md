@@ -48,6 +48,32 @@ Pull requests are welcome! Please open an issue first to discuss major changes.
 - Use conventional commits.
 - See `.pre-commit-config.yaml` for linting and formatting hooks.
 
+## Release
+
+To create a new release for all supported platforms:
+
+1. Make sure your working directory is clean and all changes are committed.
+2. Bump the version in your package.json if needed.
+3. Run:
+
+```sh
+bun run release-all <new-version>
+```
+
+This will:
+
+- Build binaries for all supported platforms (darwin/linux, amd64/arm64)
+- Package each binary and the LICENSE file into a tarball
+- Generate or update the `komodor.yaml` manifest with the correct SHA256 and URIs
+
+4. Upload the generated tarballs to your GitHub release for the new version.
+5. Commit and push the updated `komodor.yaml` manifest if needed.
+6. (Optional, but recommended) Update the Krew plugin index:
+   - Fork and clone https://github.com/kubernetes-sigs/krew-index
+   - Copy your updated `komodor.yaml` manifest to the `plugins/` directory in your fork
+   - Open a pull request to the krew-index repository with your changes
+   - See the [Krew plugin submission guide](https://krew.sigs.k8s.io/docs/developer-guide/release/) for more details
+
 ## License
 
 MIT
