@@ -5,12 +5,9 @@ export async function openCommand(
   resourceTypeObj: any,
   resourceName: string,
   namespace: string,
+  cluster: string,
 ) {
-  const clusterContext = getKubectlConfigValue("current-context");
-  const clusterName = clusterContext.includes("/")
-    ? clusterContext.split("/").pop()!
-    : clusterContext;
-  const workspaceId = `cluster-${clusterName}`;
+  const workspaceId = `cluster-${cluster}`;
 
   const now = Date.now();
   const hourAgo = now - 3600_000;
@@ -20,7 +17,7 @@ export async function openCommand(
       {
         index: 0,
         drawerType: "ResourceDrawerByData",
-        cluster: clusterName,
+        cluster,
         namespace,
         resourceType: resourceTypeObj.canonical,
         resourceName,
@@ -30,7 +27,7 @@ export async function openCommand(
   );
 
   const url =
-    `https://app.komodor.com/main/resources/${resourceTypeObj.category}/${resourceTypeObj.urlPath}/${clusterName}` +
+    `https://app.komodor.com/main/resources/${resourceTypeObj.category}/${resourceTypeObj.urlPath}/${cluster}` +
     `?drawers=${drawers}` +
     `&workspaceId=${workspaceId}` +
     `&deleted-pods-timeWindow=${hourAgo}-${now}&deleted-pods-timeframe=hour`;

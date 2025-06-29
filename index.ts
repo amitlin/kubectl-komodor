@@ -6,7 +6,7 @@ import { getKubectlConfigValue } from "./cli/utils";
 import { openCommand } from "./cli/commands/open";
 
 function printHelp() {
-  console.log(`kubectl komodor <command> <resourceType> <resourceName> [--namespace <ns>]
+  console.log(`kubectl komodor <command> <resourceType> <resourceName> [--namespace <ns>] [--cluster <cluster>]
 
 Commands:
   open        Open the resource in Komodor
@@ -18,10 +18,11 @@ Resource Types:
 Options:
   -h, --help  Show this help message
   -n, --namespace <ns>  Specify the namespace (default: current or 'default')
+  -c, --cluster <cluster>  Specify the cluster name (default: derived from current context)
 
 Examples:
   kubectl komodor open ds my-daemonset -n kube-system
-  kubectl komodor open deployment my-deploy
+  kubectl komodor open deployment my-deploy -c my-cluster
 `);
 }
 
@@ -33,6 +34,8 @@ function parseArgsWithBun() {
       n: { type: "string" },
       help: { type: "boolean" },
       h: { type: "boolean" },
+      cluster: { type: "string" },
+      c: { type: "string" },
     },
     strict: false,
     allowPositionals: true,
@@ -45,7 +48,7 @@ function parseArgsWithBun() {
 
   if (positionals.length < 1) {
     console.error(
-      "Usage: kubectl komodor <command> <resourceType> <resourceName> [--namespace <ns>]",
+      "Usage: kubectl komodor <command> <resourceType> <resourceName> [--namespace <ns>] [--cluster <cluster>]",
     );
     process.exit(1);
   }
@@ -60,7 +63,7 @@ function parseArgsWithBun() {
 
   if (positionals.length < 3) {
     console.error(
-      "Usage: kubectl komodor open <resourceType> <resourceName> [--namespace <ns>]",
+      "Usage: kubectl komodor open <resourceType> <resourceName> [--namespace <ns>] [--cluster <cluster>]",
     );
     process.exit(1);
   }
@@ -81,21 +84,30 @@ function parseArgsWithBun() {
   let namespace =
     (typeof values.namespace === "string" ? values.namespace : undefined) ||
     (typeof values.n === "string" ? values.n : undefined) ||
-    getKubectlConfigValue("view --minify --output 'jsonpath={..namespace}'") ||
-    "default";
+    getKubectlConfigValue("view --minify --output 'jsonpath={..namespace}'")
   if (resourceTypeObj.global) {
     namespace = "";
   }
 
-  return { command, resourceTypeObj, resourceName, namespace };
+  let cluster =
+    (typeof values.cluster === "string" ? values.cluster : undefined) ||
+    (typeof values.c === "string" ? values.c : undefined);
+  if (!cluster) {
+    const clusterContext = getKubectlConfigValue("current-context");
+    cluster = clusterContext.includes("/")
+      ? clusterContext.split("/").pop()!
+      : clusterContext;
+  }
+
+  return { command, resourceTypeObj, resourceName, namespace, cluster };
 }
 
 async function main() {
-  const { command, resourceTypeObj, resourceName, namespace } =
+  const { command, resourceTypeObj, resourceName, namespace, cluster } =
     parseArgsWithBun();
   switch (command) {
     case "open":
-      await openCommand(resourceTypeObj, resourceName, namespace);
+      await openCommand(resourceTypeObj, resourceName, namespace, cluster);
       break;
     default:
       console.error(
