@@ -62,7 +62,7 @@ To create a new release for all supported platforms:
 3. Run:
 
 ```sh
-bun run release-all <new-version>
+bun run release-all
 ```
 
 This will:
