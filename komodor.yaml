@@ -14,26 +14,26 @@ spec:
           os: darwin
           arch: arm64
       uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.0/kubectl-komodor-darwin-arm64.tar.gz
-      sha256: 3411fdf056c489c18166c704381e34857cea6458ea9ea148944cbf68b75436e5
+      sha256: dcf163222c6f053f418696f491330e05b264395dfbabb3017c3d80652d569118
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: darwin
           arch: amd64
       uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.0/kubectl-komodor-darwin-amd64.tar.gz
-      sha256: 52f6b7d08fa11fccb25dfecfef71dc8394d44baed4c5fe6914add02a7429cc5f
+      sha256: b74a5c045f29ff5681b9ec18fb62590ea19104a3d9c2efa8564987040306194a
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: linux
           arch: arm64
       uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.0/kubectl-komodor-linux-arm64.tar.gz
-      sha256: bca56fe707f5b439ea2d0414e6127d51f60be662333e2c711d55823ec7cf7a1d
+      sha256: 6a5e1cdec2b999d96afd83f9d3c0b64542cd9611794f0ec4b015df870fb27e06
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: linux
           arch: amd64
       uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.0/kubectl-komodor-linux-amd64.tar.gz
-      sha256: c60efddd592ea827ea5db62cb8493c1757b0c9f97d37c607408f7de55811e9c6
+      sha256: 8b44509573f01e40150e64ad488fe8d2007bd846bda31eb47dfbcacfc0320fa3
       bin: kubectl-komodor
