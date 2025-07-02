@@ -3,7 +3,7 @@ kind: Plugin
 metadata:
   name: komodor
 spec:
-  version: "v1.1.0"
+  version: "v1.1.3"
   homepage: "https://github.com/amitlin/kubectl-komodor"
   shortDescription: "Interact with cluster resources through Komodor"
   description: |
