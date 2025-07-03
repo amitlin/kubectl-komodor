@@ -50,10 +50,10 @@ for (const { os, arch, target } of platforms) {
   // 1. Build
   console.log(`Building for ${os}/${arch}...`);
   if (os === "linux") {
-    // For Linux, use static linking to ensure compatibility with Alpine/musl
-    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --static`;
+    // For Linux, use static linking and minification to ensure compatibility with Alpine/musl
+    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --static --minify`;
   } else {
-    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE}`;
+    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --minify`;
   }
 
   // 2. Tar

@@ -45,10 +45,10 @@ const TARBALL = `${PLUGIN_NAME}-${os}-${manifestArch}.tar.gz`;
 // 4. Build binary
 console.log(`Building binary for ${os}/${manifestArch}...`);
 if (os === "linux") {
-  // For Linux, use static linking to ensure compatibility with Alpine/musl
-  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE} --static`;
+  // For Linux, use static linking and minification to ensure compatibility with Alpine/musl
+  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE} --static --minify`;
 } else {
-  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE}`;
+  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE} --minify`;
 }
 
 // 5. Package tarball
