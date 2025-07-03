@@ -49,7 +49,12 @@ for (const { os, arch, target } of platforms) {
 
   // 1. Build
   console.log(`Building for ${os}/${arch}...`);
-  await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE}`;
+  if (os === "linux") {
+    // For Linux, use static linking to ensure compatibility with Alpine/musl
+    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --static`;
+  } else {
+    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE}`;
+  }
 
   // 2. Tar
   console.log(`Packaging ${OUTFILE} and LICENSE into ${TARBALL}...`);

@@ -5,6 +5,7 @@ bun.lockb
 # Bun build output
 .kubectl-komodor*
 kubectl-komodor*
+komodor.dev.yaml
 !kubectl-komodor.yaml
 !kubectl-komodor.dev.example.yaml
 *.tar.gz

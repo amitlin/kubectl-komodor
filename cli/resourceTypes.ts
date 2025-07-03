@@ -128,6 +128,14 @@ export const RESOURCE_TYPES = [
     urlPath: "pdbs",
     category: "configuration",
   },
+  {
+    canonical: "Namespace",
+    komodor: "Namespaces",
+    aliases: ["ns", "namespace", "namespaces"],
+    urlPath: "namespaces",
+    category: "configuration",
+    global: true,
+  },
   // Network
   {
     canonical: "Service",

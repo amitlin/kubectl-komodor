@@ -7,7 +7,7 @@ const MANIFEST = "komodor.dev.yaml";
 const ENTRYPOINT = "index.ts";
 
 if (Bun.argv.length < 3) {
-  console.error("Usage: bun release.ts <new-version>");
+  console.error("Usage: bun install-locally.ts <new-version>");
   process.exit(1);
 }
 const NEW_VERSION = Bun.argv[2];
@@ -44,7 +44,12 @@ const TARBALL = `${PLUGIN_NAME}-${os}-${manifestArch}.tar.gz`;
 
 // 4. Build binary
 console.log(`Building binary for ${os}/${manifestArch}...`);
-await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE}`;
+if (os === "linux") {
+  // For Linux, use static linking to ensure compatibility with Alpine/musl
+  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE} --static`;
+} else {
+  await $`bun build ${ENTRYPOINT} --compile --outfile=${OUTFILE}`;
+}
 
 // 5. Package tarball
 console.log(`Packaging ${OUTFILE} into ${TARBALL}...`);

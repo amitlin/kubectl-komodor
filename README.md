@@ -146,6 +146,7 @@ The plugin supports all major Kubernetes resource types with common aliases:
 - **LimitRange** (`limitrange`, `limitranges`)
 - **HorizontalPodAutoscaler** (`hpa`, `hpas`, `horizontalpodautoscaler`, `horizontalpodautoscalers`)
 - **PodDisruptionBudget** (`pdb`, `pdbs`, `poddisruptionbudget`, `poddisruptionbudgets`)
+- **Namespace** (`ns`, `namespace`, `namespaces`) - *Global resource*
 
 ### Access Control
 - **ServiceAccount** (`sa`, `serviceaccount`, `serviceaccounts`)
