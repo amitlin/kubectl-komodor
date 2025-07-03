@@ -1,8 +1,13 @@
 # kubectl-komodor
 
-A kubectl plugin to open resources in Komodor directly from the command line.
+A kubectl plugin to interact with Kubernetes resources through Komodor directly from the command line.
 
 > **Note:** The current context name must either be equal to the cluster name in Komodor, or an ARN that ends with the cluster name in Komodor (e.g. `arn:aws:eks:us-east-1:123456789:cluster/your-cluster-name`).
+
+## Features
+
+- **🌐 Resource Navigation**: Open any Kubernetes resource directly in Komodor's web interface
+- **🔍 Root Cause Analysis**: Start automated RCA sessions for resources and get detailed analysis results
 
 ## Installation
 
@@ -24,21 +29,130 @@ bun install
 bun run install-locally
 ```
 
-## Usage
+## Quick Start
+
+1. **Authenticate** (required for RCA features):
+   ```sh
+   kubectl komodor auth <your-api-key>
+   ```
+
+2. **Open a resource in Komodor**:
+   ```sh
+   kubectl komodor open deployment my-deploy
+   ```
+
+3. **Start a Root Cause Analysis**:
+   ```sh
+   kubectl komodor rca deployment my-deploy
+   ```
+
+## Commands
+
+### `auth` - Authentication
+
+Save your Komodor API key for authenticated operations.
 
 ```sh
-kubectl komodor open <resourceType> <resourceName> [--namespace <ns>]
+kubectl komodor auth <api-key>
 ```
 
-- Supports all major Kubernetes resource types and common aliases (e.g. `ds` for DaemonSet, `deploy` for Deployment, etc.)
-- Use `--help` for more info.
+**Examples:**
+```sh
+kubectl komodor auth your-api-key-here
+```
 
-## Examples
+The API key is stored securely in `~/.kubectl-komodor/config.json`.
 
+### `open` - Open Resource in Komodor
+
+Open any Kubernetes resource directly in Komodor's web interface.
+
+```sh
+kubectl komodor open <resourceType> <resourceName> [--namespace <ns>] [--cluster <cluster>]
+```
+
+**Arguments:**
+- `resourceType` - The Kubernetes resource type (e.g., deployment, pod, service)
+- `resourceName` - The name of the resource
+
+**Options:**
+- `-n, --namespace <ns>` - Specify the namespace (default: current or 'default')
+- `-c, --cluster <cluster>` - Specify the cluster name (default: derived from current context)
+
+**Examples:**
 ```sh
 kubectl komodor open ds my-daemonset -n kube-system
-kubectl komodor open deployment my-deploy
+kubectl komodor open deployment my-deploy -c my-cluster
+kubectl komodor open pod my-pod -n default
+kubectl komodor open service my-service
+kubectl komodor open ingress my-ingress
 ```
+
+### `rca` - Root Cause Analysis
+
+Start an automated root cause analysis session for a resource and get detailed results.
+
+```sh
+kubectl komodor rca <resourceType> <resourceName> [--namespace <ns>] [--cluster <cluster>]
+```
+
+**Arguments:**
+- `resourceType` - The Kubernetes resource type (e.g., deployment, pod, service)
+- `resourceName` - The name of the resource
+
+**Options:**
+- `-n, --namespace <ns>` - Specify the namespace (default: current or 'default')
+- `-c, --cluster <cluster>` - Specify the cluster name (default: derived from current context)
+
+**Examples:**
+```sh
+kubectl komodor rca deployment my-deploy -n default
+kubectl komodor rca pod my-pod -c my-cluster
+kubectl komodor rca service my-service -n kube-system
+```
+
+**Note:** This command requires authentication. Run `kubectl komodor auth <api-key>` first.
+
+## Supported Resource Types
+
+The plugin supports all major Kubernetes resource types with common aliases:
+
+### Workloads
+- **Pod** (`pod`, `pods`)
+- **Deployment** (`deploy`, `deployment`, `deployments`)
+- **ReplicaSet** (`rs`, `replicaset`, `replicasets`)
+- **StatefulSet** (`sts`, `statefulset`, `statefulsets`)
+- **DaemonSet** (`ds`, `daemonset`, `daemonsets`)
+- **Job** (`job`, `jobs`)
+- **CronJob** (`cronjob`, `cronjobs`)
+- **Argo Rollout** (`argo`, `rollout`, `argo rollout`, `argo rollouts`)
+
+### Network
+- **Service** (`svc`, `service`, `services`)
+- **Ingress** (`ing`, `ingress`, `ingresses`)
+- **Endpoints** (`endpoint`, `endpoints`)
+- **EndpointSlice** (`endpointslice`, `endpointslices`)
+- **NetworkPolicy** (`netpol`, `networkpolicy`, `networkpolicies`)
+
+### Storage
+- **PersistentVolumeClaim** (`pvc`, `pvcs`, `persistentvolumeclaim`, `persistentvolumeclaims`)
+- **PersistentVolume** (`pv`, `pvs`, `persistentvolume`, `persistentvolumes`)
+- **StorageClass** (`sc`, `storageclass`, `storageclasses`) - *Global resource*
+
+### Configuration
+- **ConfigMap** (`cm`, `configmap`, `configmaps`)
+- **Secret** (`secret`, `secrets`)
+- **ResourceQuota** (`rq`, `resourcequota`, `resourcequotas`)
+- **LimitRange** (`limitrange`, `limitranges`)
+- **HorizontalPodAutoscaler** (`hpa`, `hpas`, `horizontalpodautoscaler`, `horizontalpodautoscalers`)
+- **PodDisruptionBudget** (`pdb`, `pdbs`, `poddisruptionbudget`, `poddisruptionbudgets`)
+
+### Access Control
+- **ServiceAccount** (`sa`, `serviceaccount`, `serviceaccounts`)
+- **Role** (`role`, `roles`)
+- **RoleBinding** (`rolebinding`, `rolebindings`)
+- **ClusterRole** (`clusterrole`, `clusterroles`) - *Global resource*
+- **ClusterRoleBinding** (`clusterrolebinding`, `clusterrolebindings`) - *Global resource*
 
 ## Development
 
