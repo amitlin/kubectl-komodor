@@ -3,7 +3,7 @@ kind: Plugin
 metadata:
   name: komodor
 spec:
-  version: "v1.1.5"
+  version: "v1.1.6"
   homepage: "https://github.com/amitlin/kubectl-komodor"
   shortDescription: "Interact with cluster resources through Komodor"
   description: |
@@ -13,27 +13,27 @@ spec:
         matchLabels:
           os: darwin
           arch: arm64
-      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.5/kubectl-komodor-darwin-arm64.tar.gz
-      sha256: 20576020e45b350258febd9f03c491f62e656d901bb4052cc801dfb55d092074
+      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.6/kubectl-komodor-darwin-arm64.tar.gz
+      sha256: 2a03e67bcf9e3f1dc94d83ac8ecc2d2f3c34224a105e316df6ed9339dd3d9c93
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: darwin
           arch: amd64
-      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.5/kubectl-komodor-darwin-amd64.tar.gz
-      sha256: 8c6e1256b578430d7cbe0b18e6a0b3502d802825b8600985df2830d17453641a
+      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.6/kubectl-komodor-darwin-amd64.tar.gz
+      sha256: 9870b297ad965c609eaa1e576e6b47047f26c30ed2a8bb44c01c29017dc77b42
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: linux
           arch: arm64
-      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.5/kubectl-komodor-linux-arm64.tar.gz
-      sha256: 1d64b05b721035487fd645a769515bc65a1137c58ed13c983a3084a431d17405
+      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.6/kubectl-komodor-linux-arm64.tar.gz
+      sha256: 6b7d68bc7a150dd432793211ef24d86c51a6d2334a6d6e41f01aa35192e19b49
       bin: kubectl-komodor
     - selector:
         matchLabels:
           os: linux
           arch: amd64
-      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.5/kubectl-komodor-linux-amd64.tar.gz
-      sha256: 283eca4b6cec502f544573feaab92811362db1178148c28bb219cfe024f06da9
+      uri: https://github.com/amitlin/kubectl-komodor/releases/download/v1.1.6/kubectl-komodor-linux-amd64.tar.gz
+      sha256: 3d564354362b7b22cc59ed7fbc2e6ac477aa2b180182868f2bba110c485cb07a
       bin: kubectl-komodor

@@ -2,7 +2,7 @@
   "name": "kubectl-komodor",
   "module": "index.ts",
   "type": "module",
-  "version": "v1.1.5",
+  "version": "v1.1.6",
   "description": "kubectl plugin to open Komodor UI for Kubernetes resources",
   "bin": {
     "kubectl-komodor": "./index.ts"
