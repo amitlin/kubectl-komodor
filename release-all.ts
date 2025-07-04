@@ -2,7 +2,6 @@
 
 import { $ } from "bun";
 const PLUGIN_NAME = "kubectl-komodor";
-const ENTRYPOINT = "index.ts";
 const VERSION = Bun.argv[2];
 const MANIFEST_FILE = "komodor.yaml";
 
@@ -11,11 +10,12 @@ if (!VERSION) {
   process.exit(1);
 }
 
+// Platforms for Krew manifest (excluding Alpine since Krew doesn't support platform selectors for Alpine)
 const platforms = [
-  { os: "darwin", arch: "arm64", target: "bun-darwin-arm64" },
-  { os: "darwin", arch: "amd64", target: "bun-darwin-x64" },
-  { os: "linux", arch: "arm64", target: "bun-linux-arm64" },
-  { os: "linux", arch: "amd64", target: "bun-linux-x64" },
+  { os: "darwin", arch: "arm64" },
+  { os: "darwin", arch: "amd64" },
+  { os: "linux", arch: "arm64" },
+  { os: "linux", arch: "amd64" },
 ];
 
 let homepage = "https://github.com/amitlin/kubectl-komodor";
@@ -33,36 +33,23 @@ try {
       ?.trim() || description;
 } catch {}
 
+console.log("🔨 Building all artifacts using build-artifacts script...");
+await $`bun run build-artifacts`;
+
 const manifestBlocks: string[] = [];
 
-for (const { os, arch, target } of platforms) {
-  const OUTFILE = `${PLUGIN_NAME}`;
+for (const { os, arch } of platforms) {
   const TARBALL = `${PLUGIN_NAME}-${os}-${arch}.tar.gz`;
 
-  console.log(`Building for ${os}/${arch}...`);
-  if (os === "linux") {
-    console.log(`Building ${os}/${arch} binary using Docker for Alpine compatibility...`);
-    const dockerfileContent = `FROM oven/bun:1-alpine
-WORKDIR /app
-COPY package.json bun.lockb ./
-COPY tsconfig.json ./
-RUN bun install
-COPY . .
-RUN bun build index.ts --compile --target=${target} --outfile=${OUTFILE} --minify
-CMD [\"cat\", \"${OUTFILE}\"]`;
-    await Bun.write("Dockerfile.build", dockerfileContent);
-    await $`docker build -f Dockerfile.build -t temp-builder .`;
-    await $`docker create --name temp-container temp-builder`;
-    await $`docker cp temp-container:/app/${OUTFILE} ./${OUTFILE}`;
-    await $`docker rm temp-container`;
-    await $`docker rmi temp-builder`;
-    await $`rm Dockerfile.build`;
-  } else {
-    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --minify`;
+  console.log(`Processing ${TARBALL} for manifest...`);
+  
+  // Check if tarball exists
+  try {
+    await $`ls ${TARBALL}`;
+  } catch {
+    console.error(`❌ Tarball ${TARBALL} not found. Make sure build-artifacts completed successfully.`);
+    process.exit(1);
   }
-
-  console.log(`Packaging ${OUTFILE} and LICENSE into ${TARBALL}...`);
-  await $`tar czf ${TARBALL} ${OUTFILE} LICENSE`;
 
   const shaOut = await $`shasum -a 256 ${TARBALL}`;
   const SHA256 = shaOut.stdout.toString().split(" ")[0];
@@ -95,8 +82,12 @@ ${manifestBlocks.join("\n")}
 
 await Bun.write(MANIFEST_FILE, manifestYaml);
 
-console.log(`\nWrote manifest to ${MANIFEST_FILE}`);
+console.log(`\n📝 Wrote manifest to ${MANIFEST_FILE}`);
 console.log("----------------------------------------");
-console.log(
-  "Upload the tarballs to your GitHub release, then update your manifest if needed.",
-);
+console.log("📦 Generated tarballs:");
+const tarballs = await $`ls -la *.tar.gz`;
+console.log(tarballs.stdout.toString());
+console.log("\n📋 Next steps:");
+console.log("1. Upload the tarballs to your GitHub release");
+console.log("2. Commit and push the updated manifest if needed");
+console.log("3. Note: Alpine musl builds are available but not included in Krew manifest");

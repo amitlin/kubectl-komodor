@@ -18,6 +18,12 @@ A kubectl plugin to interact with Kubernetes resources through Komodor directly 
 > ```sh
 > apk add --no-cache libstdc++
 > ```
+> 
+> **Alpine Linux Binaries:**
+> 
+> While Krew doesn't support platform-specific selectors for Alpine Linux (musl), Alpine-compatible binaries are available for manual download from the [GitHub releases](https://github.com/amitlin/kubectl-komodor/releases). Look for files with `-musl` suffix:
+> - `kubectl-komodor-linux-arm64-musl.tar.gz`
+> - `kubectl-komodor-linux-amd64-musl.tar.gz`
 
 ### With Krew (recommended)
 
@@ -168,6 +174,36 @@ The plugin supports all major Kubernetes resource types with common aliases:
 ```sh
 bun ./index.ts komodor open deployment my-deploy
 ```
+
+### Building Multi-Platform Binaries
+
+To build binaries for all supported platforms and architectures using Docker:
+
+```sh
+bun run build-artifacts
+```
+
+This script builds binaries for:
+- **Alpine Linux**: ARM64 and AMD64
+- **Debian Linux**: ARM64 and AMD64  
+- **Darwin (macOS)**: ARM64 and AMD64 (native builds)
+
+The build process:
+1. Uses Docker containers with Alpine and Debian base images
+2. Installs bash and bun in each container
+3. Builds binaries using `bun build --compile` with appropriate targets
+4. Creates tarballs with the binary and LICENSE file
+5. Cleans up Docker containers and images automatically
+
+**Requirements:**
+- Docker installed and running
+- Bun installed locally (for Darwin builds)
+
+**Output:**
+- `kubectl-komodor-linux-arm64.tar.gz`
+- `kubectl-komodor-linux-amd64.tar.gz`
+- `kubectl-komodor-darwin-arm64.tar.gz`
+- `kubectl-komodor-darwin-amd64.tar.gz`
 
 ## Contributing
 

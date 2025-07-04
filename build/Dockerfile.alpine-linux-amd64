@@ -1,0 +1,26 @@
+FROM --platform=linux/amd64 alpine:latest
+
+WORKDIR /app
+
+# Install bash, curl, and unzip
+RUN apk add --no-cache bash curl unzip libstdc++
+
+# Install bun
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:$PATH"
+
+# Copy package files
+COPY package.json bun.lockb ./
+COPY tsconfig.json ./
+
+# Install dependencies
+RUN bun install
+
+# Copy source code
+COPY . .
+
+# Build the binary
+RUN bun build index.ts --compile --outfile=kubectl-komodor --minify
+
+# Make it executable
+RUN chmod +x kubectl-komodor

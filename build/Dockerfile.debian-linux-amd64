@@ -1,0 +1,26 @@
+FROM --platform=linux/amd64 debian:bullseye-slim
+
+WORKDIR /app
+
+# Install bash, curl, and unzip
+RUN apt-get update && apt-get install -y bash curl unzip
+
+# Install bun
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:$PATH"
+
+# Copy package files
+COPY package.json bun.lockb ./
+COPY tsconfig.json ./
+
+# Install dependencies
+RUN bun install
+
+# Copy source code
+COPY . .
+
+# Build the binary
+RUN bun build index.ts --compile --outfile=kubectl-komodor --minify
+
+# Make it executable
+RUN chmod +x kubectl-komodor
