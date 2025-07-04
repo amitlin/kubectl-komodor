@@ -18,7 +18,6 @@ const platforms = [
   { os: "linux", arch: "amd64", target: "bun-linux-x64" },
 ];
 
-// Try to read the current manifest for metadata
 let homepage = "https://github.com/amitlin/kubectl-komodor";
 let shortDescription = "Interact with cluster resources through Komodor";
 let description =
@@ -34,37 +33,40 @@ try {
       ?.trim() || description;
 } catch {}
 
-type PlatformBlock = {
-  os: string;
-  arch: string;
-  target: string;
-  uri: string;
-  sha256: string;
-};
 const manifestBlocks: string[] = [];
 
 for (const { os, arch, target } of platforms) {
   const OUTFILE = `${PLUGIN_NAME}`;
   const TARBALL = `${PLUGIN_NAME}-${os}-${arch}.tar.gz`;
 
-  // 1. Build
   console.log(`Building for ${os}/${arch}...`);
   if (os === "linux") {
-    // For Linux, use static linking and minification to ensure compatibility with Alpine/musl
-    await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --static --minify`;
+    console.log(`Building ${os}/${arch} binary using Docker for Alpine compatibility...`);
+    const dockerfileContent = `FROM oven/bun:1-alpine
+WORKDIR /app
+COPY package.json bun.lockb ./
+COPY tsconfig.json ./
+RUN bun install
+COPY . .
+RUN bun build index.ts --compile --target=${target} --outfile=${OUTFILE} --minify
+CMD [\"cat\", \"${OUTFILE}\"]`;
+    await Bun.write("Dockerfile.build", dockerfileContent);
+    await $`docker build -f Dockerfile.build -t temp-builder .`;
+    await $`docker create --name temp-container temp-builder`;
+    await $`docker cp temp-container:/app/${OUTFILE} ./${OUTFILE}`;
+    await $`docker rm temp-container`;
+    await $`docker rmi temp-builder`;
+    await $`rm Dockerfile.build`;
   } else {
     await $`bun build ${ENTRYPOINT} --compile --target=${target} --outfile=${OUTFILE} --minify`;
   }
 
-  // 2. Tar
   console.log(`Packaging ${OUTFILE} and LICENSE into ${TARBALL}...`);
   await $`tar czf ${TARBALL} ${OUTFILE} LICENSE`;
 
-  // 3. SHA256
   const shaOut = await $`shasum -a 256 ${TARBALL}`;
   const SHA256 = shaOut.stdout.toString().split(" ")[0];
 
-  // 4. Manifest block
   const uri = `https://github.com/amitlin/kubectl-komodor/releases/download/${VERSION}/${TARBALL}`;
   manifestBlocks.push(
     `    - selector:\n` +

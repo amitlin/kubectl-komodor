@@ -11,6 +11,14 @@ A kubectl plugin to interact with Kubernetes resources through Komodor directly 
 
 ## Installation
 
+> **Note for Alpine Linux users:**
+> 
+> The kubectl-komodor binary for Linux (built with Bun) requires the `libstdc++` package to be installed on Alpine Linux. This is because Bun's runtime depends on the C++ standard library, and fully static binaries are not currently supported. You can install it with:
+> 
+> ```sh
+> apk add --no-cache libstdc++
+> ```
+
 ### With Krew (recommended)
 
 ```sh
